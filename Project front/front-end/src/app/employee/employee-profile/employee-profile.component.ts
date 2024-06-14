@@ -21,7 +21,6 @@ export class EmployeeProfileComponent {
   populateForm(){
     this.employeeForm = this.fb.group({
       id: [this.employee.id],
-      username: [this.employee.username],
       email: [this.employee.email],
       password: [this.employee.password],
       role: [this.employee.role],
@@ -44,10 +43,7 @@ export class EmployeeProfileComponent {
   }
 
   updateEmployee(){
-    const usernameControl = this.employeeForm.get('username');
-    if (usernameControl) {
-      this.employee.username = usernameControl.value;
-    }
+ 
 
     const passwordControl = this.employeeForm.get('password');
     if (passwordControl) {

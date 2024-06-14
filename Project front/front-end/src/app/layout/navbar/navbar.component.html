@@ -4,19 +4,24 @@
     <div class="reg-user"></div>
 
     <div class="buttons">
-      <a raised-button *ngIf="isLogged " routerLinkActive="active" [routerLink]="['home']" class="link">Home</a>
-      <a raised-button *ngIf="isLogged " routerLinkActive="active" [routerLink]="['adminProfile']" class="link">Admin profile</a>
-      <a raised-button *ngIf="isLogged " routerLinkActive="active" [routerLink]="['client-profile']" class="link">Client profile</a>
+      <a raised-button *ngIf="isLogged" routerLinkActive="active" [routerLink]="['home']" class="link">Home</a>
+      <a raised-button *ngIf="!isLogged" routerLinkActive="active" [routerLink]="['client-register']" class="link">Client sign in</a>
+      <a raised-button *ngIf="isLogged && userRole == 'ADMINISTRATOR'" routerLinkActive="active" [routerLink]="['adminProfile']" class="link">Admin profile</a>
+      <a raised-button *ngIf="isLogged && userRole == 'ADMINISTRATOR'" routerLinkActive="active" [routerLink]="['createAdmin']" class="link">Register admin</a>
+      <a raised-button *ngIf="isLogged && userRole == 'ADMINISTRATOR'" routerLinkActive="active" [routerLink]="['blockUsersPage']" class="link">Block users</a>
+      <a raised-button *ngIf="isLogged && userRole == 'CLIENT'" routerLinkActive="active" [routerLink]="['client-profile']" class="link">Client profile</a>
+      <a raised-button *ngIf="isLogged" routerLinkActive="active" [routerLink]="['changePasswordForm']" class="link">Change password</a>
       <button *ngIf="isLogged " class="nbuttonEnd" (click)="onLogout()">Logout</button>
+      <button *ngIf="!isLogged" class="nbuttonEnd" [routerLink]="['login']">Login</button>
     </div>
 
-    <div class="log-out" *ngIf="!isLogged">
+    <!--div class="log-out" *ngIf="!isLogged">
       <button class="nbuttonEnd" [routerLink]="['client-register']">Client Sign in</button>
-    </div>
+    </div-->
 
-    <div class="log-out" *ngIf="!isLogged">
+    <!--div class="log-out" *ngIf="!isLogged">
       <button class="nbuttonEnd" [routerLink]="['login']">Login</button>
-    </div>
+    </div-->
     
   </div>
 </div>

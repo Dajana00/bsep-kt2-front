@@ -97,5 +97,25 @@ export class AdminProfileService {
     });
     return this.http.post<Employee>(`${this.apiUrl}/users/registerEmployee`, employee,{headers});
   }
+
+  updateUser(user: User): Observable<User> {
+    const token = this.jwtHelper.tokenGetter();
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer ' + token,
+      'Content-Type': 'application/json',
+    });
+    //console.log(headers);
+    //console.log(user)
+    return this.http.put<User>(`${this.apiUrl}/users/blockOrUnblock`, user, {headers});
+  }
+
+  getAllUsers(): Observable<User[]> {
+    const token = this.jwtHelper.tokenGetter();
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer ' + token,
+      'Content-Type': 'application/json',
+    });
+    return this.http.get<User[]>(`${this.apiUrl}/users/getAllUsers`, {headers});
+  }
  
 }

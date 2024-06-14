@@ -47,7 +47,14 @@ export class AuthGuard implements CanActivate {
           })
         );
       }
-      return of(this.isAuthorized(requiredRole));
+      if (this.isAuthorized(requiredRole)) {
+        //console.log("USAO TRUE")
+        return of(true)
+      }else {
+        //console.log("USAO ELSE")
+        this.router.navigate(['/home'])
+        return of(false)
+      }
     } else {
       console.log('Nije ulogovan!');
       this.router.navigate(['/login']);
@@ -57,9 +64,20 @@ export class AuthGuard implements CanActivate {
 
   isAuthorized(requiredRole: string): boolean {
     if (!requiredRole) {
-      return true; // No specific role required, allow access
+        return true; 
     }
-    const userRole = this.authService.getUserRole();
-    return userRole === requiredRole;
-  }
+
+    var userRole = this.authService.getUserRole();
+    // console.log("REQUIRED ROLE:", requiredRole);
+    // console.log("USER ROLE:", userRole);
+    // console.log("Type of USER ROLE:", typeof userRole);
+    // console.log("Type of REQUIRED ROLE:", typeof requiredRole);
+
+    if (Array.isArray(userRole)) {
+      userRole = userRole.join(','); 
+    }
+    
+    return userRole.trim().toUpperCase() === requiredRole.trim().toUpperCase();
+}
+
 }

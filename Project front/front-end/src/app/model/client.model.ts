@@ -11,5 +11,6 @@ export class Client {
   phone: string | undefined;
   type: string | undefined;
   packageType: string | undefined;
+  tfaEnabled: boolean | undefined;
 }
   

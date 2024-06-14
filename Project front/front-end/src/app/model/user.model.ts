@@ -1,16 +1,16 @@
-export enum Role{
-    ADMINISTRATOR,
-    CLIENT,
-    EMPLOYEE
+export enum Role {
+  ADMINISTRATOR = "ADMINISTRATOR",
+  CLIENT = "CLIENT",
+  EMPLOYEE = "EMPLOYEE"
 }
 
 export interface User{
     id:number,
-    username:string;
     email:string,
     password:string;
     role:Role;
     emailChecked:boolean;
+    blocked:boolean;
 
     firstName:string; //dodato da bi se kompajliralo
     lastName:string;

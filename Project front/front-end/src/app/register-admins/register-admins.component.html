@@ -3,8 +3,8 @@
       <div class="first-form">
         <h2 class="title">User Registration</h2>
         <mat-radio-group formControlName="userRole" style="display: flex;">
-            <mat-radio-button [value]="false" style="background-color: white; border-radius: 10px;padding: 5px 10px;margin-bottom: 15px;margin-left:10px;">Administrator</mat-radio-button>
-            <mat-radio-button [value]="true" style="background-color: white; border-radius: 10px;padding: 5px 10px;margin-bottom: 15px;margin-left:10px;">Employee</mat-radio-button>
+            <mat-radio-button [value]="false" style="background-color: white; border-radius: 10px;padding: 5px 10px;margin-bottom: 15px;margin-left:10px;">Employee</mat-radio-button>
+            <mat-radio-button [value]="true" style="background-color: white; border-radius: 10px;padding: 5px 10px;margin-bottom: 15px;margin-left:10px;">Administrator</mat-radio-button>
           </mat-radio-group>
       
   
@@ -27,10 +27,7 @@
           <input matInput formControlName="confirmPassword" type="password" required>
         </mat-form-field>
         <br/>
-        <mat-form-field appearance="fill">
-          <mat-label>Username</mat-label>
-          <input matInput formControlName="username" type="text" required>
-        </mat-form-field>
+       
         <br/>
         <mat-form-field appearance="fill">
           <mat-label>First name</mat-label>

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ClientService } from 'src/app/service/client-service.service';
 
 @Component({
@@ -15,7 +15,6 @@ export class ClientRegisterFormComponent {
 
   constructor(private formBuilder: FormBuilder, private clientService: ClientService, private router: Router) {
     this.userForm = this.formBuilder.group({
-      username: ['', Validators.required],
       userType: [false, Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6), this.passwordStrengthValidator()]],
@@ -27,25 +26,21 @@ export class ClientRegisterFormComponent {
       country: ['', Validators.required],
       phone: ['', Validators.required],
       packageType: ['BASIC', Validators.required],
+      isTfaEnabled: [false] // New form control for two-factor authentication
     }, {
       validator: [ this.passwordMatchValidator, this.passwordStrengthValidator]
     });
 
-    // Pretplata na promene u formi
+    // Subscription to form changes
     this.userForm.get('packageType')?.valueChanges.subscribe((value) => {
-      console.log('Izabran paket:', value);
-      // Ovde možete dodati dodatne radnje koje treba da se izvrše kada se izabere paket
+      console.log('Selected package:', value);
       this.packageType = value;
     });
-
   }
 
   passwordMatchValidator(formGroup: FormGroup) {
-    var a = formGroup.get('password');
-    var b = formGroup.get('confirmPassword');
-    const password = a;
-    const confirmPassword = b;
-  
+    const password = formGroup.get('password');
+    const confirmPassword = formGroup.get('confirmPassword');
     if (password && confirmPassword) {
       const match = password.value === confirmPassword.value;
       if (!match) {
@@ -54,11 +49,9 @@ export class ClientRegisterFormComponent {
         confirmPassword.setErrors(null);
       }
     }
-  
     return null;
   }
 
-  // Validator za proveru jačine lozinke
   passwordStrengthValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
       const value = control.value;
@@ -71,10 +64,10 @@ export class ClientRegisterFormComponent {
 
   register(): void {
     const client: any = {
-      username: this.userForm.value.username || '',
+      username: this.userForm.value.email || '',
       email: this.userForm.value.email || '',
       password: this.userForm.value.password || '',
-      role: 'CLIENT', // Dodajemo podrazumevanu vrednost za 'role'
+      role: 'CLIENT',
       clientFirmName: this.userForm.value.name || '',
       clientSurnameFirmPIB: this.userForm.value.surname || '',
       clientFirmResidentialAddress: this.userForm.value.address || '',
@@ -82,30 +75,31 @@ export class ClientRegisterFormComponent {
       country: this.userForm.value.country || '',
       phone: this.userForm.value.phone || '',
       type: this.userForm.get('userType')?.value ? 'LEGALLY' : 'PHYSICALLY',
-      packageType: this.packageType
+      packageType: this.packageType,
+      tfaEnabled: this.userForm.value.isTfaEnabled // Include two-factor authentication
     };
 
-    console.log(client.package)
+    console.log('Registration data:', client);
 
-    this.clientService.registerClient(client).subscribe( {
-      next:(res)=>{
-          console.log('successfull',res)
-          this.sendRequest(client.username);
+    this.clientService.registerClient(client).subscribe({
+      next: (res) => {
+        console.log('Registration successful', res);
+        this.sendRequest(client.username);
       },
-      error:(err)=>{
-        console.log('greska',err)
+      error: (err) => {
+        console.log('Registration error', err);
       }
     });
   }
 
   sendRequest(username: string): void {
-    this.clientService.sendRequest(username).subscribe( {
-      next:(res)=>{
-          console.log('successfull',res)
-          this.router.navigate(['login'])
+    this.clientService.sendRequest(username).subscribe({
+      next: (res) => {
+        console.log('Request successful', res);
+        this.router.navigate(['login']);
       },
-      error:(err)=>{
-        console.log('greska',err)
+      error: (err) => {
+        console.log('Request error', err);
       }
     });
   }

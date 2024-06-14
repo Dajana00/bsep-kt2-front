@@ -39,6 +39,8 @@ export class ClientProfileComponent implements OnInit {
   crAddr: string | undefined;
   clType: string | undefined;
 
+  loggedInId:number = 0;
+
   constructor(private formBuilder: FormBuilder, private authService: AuthService, private clientService: ClientService) { }
 
   ngOnInit(): void {
@@ -51,6 +53,7 @@ export class ClientProfileComponent implements OnInit {
     this.clientService.getClientData(this.authService.getUserId()).subscribe( {
       next:(res)=>{
           this.client = res;
+          this.loggedInId = this.authService.getUserId();
           this.investigateFaceType();
       },
       error:(err)=>{
@@ -68,7 +71,7 @@ export class ClientProfileComponent implements OnInit {
     }
     else {
       this.fcName = "First name:";
-      this.surPIB = "Last PIB:";
+      this.surPIB = "Last name:";
       this.crAddr = "Residential address:";
       this.clType = "INDIVIDUAL";
     }
@@ -170,24 +173,33 @@ export class ClientProfileComponent implements OnInit {
 
   editEmail(): void {
     if(this.validateEmail(this.emailValue)) {
-      this.clientService.updateEmail(this.authService.getUserId(), this.emailValue).subscribe(() => {
-        // Ova funkcija će se pozvati kada se HTTP zahtev uspešno završi
-        console.log('Email updated successfully');
-        this.getClient();
-        this.inputEmail = false;
-        this.emailError = false;
-        this.emailValue = '';
-      }, (error) => {
-        // Ova funkcija će se pozvati ako se dogodi greška prilikom HTTP zahteva
-        console.error('Error updating email:', error);
-        // Možete dodati logiku za prikazivanje greške korisniku ako je potrebno
-      });
+      if(this.isUpdatedEmail()){
+          location.reload();
+     }
     }
     else {
       this.emailError = true;
     }
   }
 
+  isUpdatedEmail(): any{
+    console.log("Usqao u metodu za update")
+    this.clientService.updateEmail(this.loggedInId, this.emailValue).subscribe(() => {
+      // Ova funkcija će se pozvati kada se HTTP zahtev uspešno završi
+      console.log('Email updated successfully');
+      this.getClient();
+      this.inputEmail = false;
+      this.emailError = false;
+      this.emailValue = '';
+      return true;
+    }, (error) => {
+      // Ova funkcija će se pozvati ako se dogodi greška prilikom HTTP zahteva
+      console.error('Error updating email:', error);
+      return false;
+      // Možete dodati logiku za prikazivanje greške korisniku ako je potrebno
+    });
+    
+  }
   editFirstName(): void {
     //console.log(this.firstNameValue);
     this.clientService.updateName(this.authService.getUserId(), this.firstNameValue).subscribe(() => {

@@ -25,7 +25,7 @@ export class RegisterAdminsComponent implements OnInit {
     firstName: '',
     lastName: '',
     id: 0,
-    username: '',
+    blocked: false,
     email: '',
     password: '',
     role: Role.ADMINISTRATOR,
@@ -40,9 +40,9 @@ export class RegisterAdminsComponent implements OnInit {
     firstName: '',
     lastName: '',
     id: 0,
-    username: '',
     email: '',
     password: '',
+    blocked: false,
     role: Role.EMPLOYEE,
     emailChecked: false,
     city: '',
@@ -71,7 +71,6 @@ export class RegisterAdminsComponent implements OnInit {
 
         this.admin.email = this.userForm.value.email;
         this.admin.password= this.userForm.value.password;
-        this.admin.username= this.userForm.value.username;
         this.admin.firstName= this.userForm.value.firstName;
         this.admin.lastName= this.userForm.value.lastName;
         this.service.registerAdmin(this.admin).subscribe({
@@ -91,7 +90,6 @@ export class RegisterAdminsComponent implements OnInit {
         this.employee.password= this.userForm.value.password;
         this.employee.firstName= this.userForm.value.firstName;
         this.employee.lastName= this.userForm.value.lastName;
-        this.employee.username= this.userForm.value.username;
 
         this.service.registerEmployee(this.employee).subscribe({
           next: () => {
