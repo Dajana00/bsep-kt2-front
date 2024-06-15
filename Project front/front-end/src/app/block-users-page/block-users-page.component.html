@@ -1,0 +1,32 @@
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="users" class="mat-elevation-z8">
+    <!-- Email Column -->
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef>Email</th>
+      <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+    </ng-container>
+
+    <!-- Role Column -->
+    <ng-container matColumnDef="role">
+      <th mat-header-cell *matHeaderCellDef>Role</th>
+      <td mat-cell *matCellDef="let user">{{ getRoleName(user.role)  }}</td>
+    </ng-container>
+
+    <!-- Action Column -->
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>Action</th>
+      <td mat-cell *matCellDef="let user">
+        <button mat-button 
+                [color]="user.blocked ? 'accent' : 'warn'"
+                (click)="updateUser(user)"
+                matTooltip="{{ user.blocked ? 'Unblock user' : 'Block user' }}">
+          <mat-icon>{{ user.blocked ? 'lock_open' : 'lock' }}</mat-icon>
+          {{ user.blocked ? 'Unblock' : 'Block' }}
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>

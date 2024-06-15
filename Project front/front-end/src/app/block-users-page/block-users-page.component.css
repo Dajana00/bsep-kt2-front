@@ -1,0 +1,20 @@
+/* Style the block and unblock buttons */
+.mat-elevation-z8 {
+    margin: 20px;
+    padding: 20px;
+    border-radius: 4px;
+  }
+  
+  .mat-table {
+    width: 100%;
+    overflow: auto;
+  }
+  
+  .mat-header-cell, .mat-cell {
+    text-align: left;
+  }
+  
+  .mat-button {
+    min-width: 120px;
+  }
+  

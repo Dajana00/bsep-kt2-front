@@ -4,15 +4,16 @@
     <div class="reg-user"></div>
 
     <div class="buttons">
-      <a raised-button *ngIf="isLogged" routerLinkActive="active" [routerLink]="['home']" class="link">Home</a>
       <a raised-button *ngIf="!isLogged" routerLinkActive="active" [routerLink]="['client-register']" class="link">Client sign in</a>
       <a raised-button *ngIf="isLogged && userRole == 'ADMINISTRATOR'" routerLinkActive="active" [routerLink]="['adminProfile']" class="link">Admin profile</a>
       <a raised-button *ngIf="isLogged && userRole == 'ADMINISTRATOR'" routerLinkActive="active" [routerLink]="['createAdmin']" class="link">Register admin</a>
+      <a raised-button *ngIf="isLogged && userRole == 'ADMINISTRATOR'" routerLinkActive="active" [routerLink]="['blockUsersPage']" class="link">Block users</a>
       <a raised-button *ngIf="isLogged && userRole == 'CLIENT'" routerLinkActive="active" [routerLink]="['client-profile']" class="link">Client profile</a>
       <!--a raised-button *ngIf="isLogged && userRole == 'CLIENT'" (click)="deleteData()" routerLinkActive="active" class="link">Delete your data</a-->
       <a raised-button *ngIf="isLogged && userRole == 'EMPLOYEE'" routerLinkActive="active" [routerLink]="['employeeProfile']" class="link">Employee profile</a>
       <a raised-button *ngIf="isLogged && userRole == 'ADMINISTRATOR'" routerLinkActive="active" [routerLink]="['requests']" class="link">Register requests</a>
       <button *ngIf="isLogged && userRole == 'CLIENT'" class="nbuttonEnd" (click)="deleteData()">Delete</button>
+      <a raised-button *ngIf="isLogged" routerLinkActive="active" [routerLink]="['home']" class="link">Home</a>
       <button *ngIf="isLogged " class="nbuttonEnd" (click)="onLogout()">Logout</button>
       <button *ngIf="!isLogged" class="nbuttonEnd" [routerLink]="['login']">Login</button>
     </div>

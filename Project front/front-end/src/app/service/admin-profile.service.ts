@@ -15,7 +15,6 @@ export class AdminProfileService {
 
   constructor(private http: HttpClient, private jwtHelper: JwtHelperService) { }
 
-  //private apiUrl = 'http://localhost:8081/api';
   private apiUrl = 'https://localhost:8081/api';
 
 
@@ -26,7 +25,7 @@ export class AdminProfileService {
       Authorization: 'Bearer ' + token,
       'Content-Type': 'application/json',
     });
-    return this.http.get<User[]>('http://localhost:8081/api/users/getAllEmployees' ,{headers});
+    return this.http.get<User[]>('https://localhost:8081/api/users/getAllEmployees' ,{headers});
   }
 
   getAllClients(): Observable<User[]> {
@@ -36,7 +35,7 @@ export class AdminProfileService {
       Authorization: 'Bearer ' + token,
       'Content-Type': 'application/json',
     });
-    return this.http.get<User[]>('http://localhost:8081/api/client/getAllClients' ,{headers});
+    return this.http.get<User[]>('https://localhost:8081/api/client/getAllClients' ,{headers});
   }
 
   getAllCompanies(): Observable<Company[]> {
@@ -46,7 +45,7 @@ export class AdminProfileService {
       Authorization: 'Bearer ' + token,
       'Content-Type': 'application/json',
     });
-    return this.http.get<Company[]>('http://localhost:8081/api/users/getAllCompanies' ,{headers});
+    return this.http.get<Company[]>('https://localhost:8081/api/users/getAllCompanies' ,{headers});
   }
   
   getAdminById(id: number): Observable<Administrator> {
@@ -55,7 +54,7 @@ export class AdminProfileService {
       Authorization: 'Bearer ' + token,
       'Content-Type': 'application/json',
     });
-    return this.http.get<Administrator>('http://localhost:8081/api/users/getAdminById/'+id,{headers});
+    return this.http.get<Administrator>('https://localhost:8081/api/users/getAdminById/'+id,{headers});
   }
 
     
@@ -65,7 +64,7 @@ export class AdminProfileService {
       Authorization: 'Bearer ' + token,
       'Content-Type': 'application/json',
     });
-    return this.http.get<Employee>('http://localhost:8081/api/users/getEmployeeById/'+id,{headers});
+    return this.http.get<Employee>('https://localhost:8081/api/users/getEmployeeById/'+id,{headers});
   }
 
   updateAdmin(admin: Administrator,id:number): Observable<any> {
@@ -74,7 +73,7 @@ export class AdminProfileService {
       Authorization: 'Bearer ' + token,
       'Content-Type': 'application/json',
     });
-    return this.http.put<any>('http://localhost:8081/api/users/editAdmin/'+id, admin,{headers});
+    return this.http.put<any>('https://localhost:8081/api/users/editAdmin/'+id, admin,{headers});
   }
 
   updateEmployee(admin: Employee,id:number): Observable<any> {
@@ -83,7 +82,7 @@ export class AdminProfileService {
       Authorization: 'Bearer ' + token,
       'Content-Type': 'application/json',
     });
-    return this.http.put<any>('http://localhost:8081/api/users/editEmployee/'+id, admin,{headers});
+    return this.http.put<any>('https://localhost:8081/api/users/editEmployee/'+id, admin,{headers});
   }
 
   registerAdmin(admin: Administrator): Observable<Administrator> {
@@ -110,6 +109,26 @@ export class AdminProfileService {
 
   readAlert(id: number): Observable<void> {
     return this.http.put<void>(`${this.apiUrl}/alerts/read-alert/` + id, null);
+  }
+
+  blockOrUnblock(user: User): Observable<User> {
+    const token = this.jwtHelper.tokenGetter();
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer ' + token,
+      'Content-Type': 'application/json',
+    });
+    //console.log(headers);
+    //console.log(user)
+    return this.http.put<User>(`https://localhost:8081/api/users/blockOrUnblock`, user, {headers});
+  }
+
+  getAllUsers(): Observable<User[]> {
+    const token = this.jwtHelper.tokenGetter();
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer ' + token,
+      'Content-Type': 'application/json',
+    });
+    return this.http.get<User[]>(`https://localhost:8081/api/users/getAllUsers`, {headers});
   }
  
 }

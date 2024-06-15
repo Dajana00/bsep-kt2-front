@@ -16,6 +16,7 @@ export class EditAdminProfileComponent {
     lastName: '',
     email: '',
     password: '',
+    blocked: false,
     isPredefined: false,
     id: 0,
     role: Role.ADMINISTRATOR,

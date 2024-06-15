@@ -5,6 +5,8 @@ import { BehaviorSubject, catchError, map, Observable, of } from 'rxjs';
 import { RefreshTokenRequest } from 'src/app/model/refreshTokenRequest.model';
 import { TfaCodeVerificationRequest } from 'src/app/model/tfaCodeVerificationRequest.model';
 import { UserTokenState } from 'src/app/model/userTokenState.model';
+import { ChangePasswordRequest } from 'src/app/model/change-password-request.model';
+import { ResetPasswordRequest } from 'src/app/model/reset-password-request.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -40,7 +42,7 @@ export class AuthService {
         map((res) => {
           console.log('Login success');
           console.log(res);
-          if(res.tfaEnabled) {
+          if(res.tfaEnabled && !res.accessToken) {
             return res
           }
 
@@ -98,13 +100,12 @@ export class AuthService {
     this.loginSource.next(ls);
   }
 
-  passwordlessLogin(token: string): Observable<any> {
+  passwordlessLogin(token: string): Observable<UserTokenState> {
     // Make an HTTP request to the server to exchange the token for access and refresh tokens
-    return this.http.get<any>('https://localhost:8081/api/authentication/passwordlessLogin', {
+    return this.http.get<UserTokenState>('https://localhost:8081/api/authentication/passwordlessLogin', {
       params: {
         token: token
-      },
-      observe: 'response'
+      }
     });
   }
 
@@ -168,6 +169,38 @@ export class AuthService {
   sendLoginLink(email: string): Observable<boolean> {
     const url = `https://localhost:8081/api/authentication/sendPasswordlessLoginLink?email=${encodeURIComponent(email)}`;
     return this.http.get<boolean>(url);
+  }
+
+  changePassword(request: ChangePasswordRequest): Observable<any> {
+    const token = this.jwtHelper.tokenGetter();
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer ' + token,
+      'Content-Type': 'application/json',
+    });
+    //console.log(token)
+    //console.log(request.userId)
+    return this.http.patch<any>('https://localhost:8081/api/users/changePassword', request, {headers}); 
+  }
+
+  sendResetPasswordLink(email: string): Observable<any> {
+    return this.http.get<any>('https://localhost:8081/api/authentication/sendResetPasswordLink', {
+      params: {
+        email: email
+      },
+      observe: 'response'
+    });
+  }
+
+  resetPasswordRedirect(token: string): Observable<UserTokenState> {
+    return this.http.get<UserTokenState>('https://localhost:8081/api/authentication/resetPasswordRedirect', {
+      params: {
+        token: token
+      }
+    });
+  }
+
+  resetPassword(request: ResetPasswordRequest) : Observable<any> {
+    return this.http.post<any>('https://localhost:8081/api/authentication/resetPassword', request); 
   }
   
 

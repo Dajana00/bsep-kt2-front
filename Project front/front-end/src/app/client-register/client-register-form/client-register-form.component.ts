@@ -15,7 +15,6 @@ export class ClientRegisterFormComponent {
 
   constructor(private formBuilder: FormBuilder, private clientService: ClientService, private router: Router) {
     this.userForm = this.formBuilder.group({
-      username: ['', Validators.required],
       userType: [false, Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6), this.passwordStrengthValidator()]],
@@ -65,7 +64,7 @@ export class ClientRegisterFormComponent {
 
   register(): void {
     const client: any = {
-      username: this.userForm.value.username || '',
+      username: this.userForm.value.email || '',
       email: this.userForm.value.email || '',
       password: this.userForm.value.password || '',
       role: 'CLIENT',

@@ -41,6 +41,7 @@ export class LoginComponent {
     id: 0,
     email: '',
     password: '',
+    blocked: false,
     role: Role.ADMINISTRATOR,
     emailChecked: false,
     city: '',
@@ -59,6 +60,7 @@ export class LoginComponent {
     id: 0,
     email: '',
     password: '',
+    blocked: false,
     role: Role.ADMINISTRATOR,
     emailChecked: false,
     city: '',
@@ -73,6 +75,7 @@ export class LoginComponent {
     id: 0,
     email: '',
     password: '',
+    blocked: false,
     role: Role.EMPLOYEE,
     emailChecked: false,
     city: '',
@@ -90,6 +93,7 @@ export class LoginComponent {
 
       password: this.userForm.value.password || '',
     };
+    console.log("afdsaf")
     
     /*this.authService.login(user).subscribe( {
       next:(res)=>{
@@ -103,6 +107,7 @@ export class LoginComponent {
         console.log('successfull', userTokenState)
 
         if (userTokenState.tfaEnabled && !userTokenState.accessToken) {
+          console.log("Uslo!!!!!!")
           this.isTfaEnabled = true;
           return
         }
