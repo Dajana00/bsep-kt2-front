@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -48,8 +48,12 @@ import { ChangePasswordFormComponent } from './change-password-form/change-passw
 import { ResetPasswordFormComponent } from './reset-password-form/reset-password-form.component';
 import { ResetPasswordPageComponent } from './reset-password-page/reset-password-page.component';
 import { BlockUsersPageComponent } from './block-users-page/block-users-page.component';
+import { KeycloakService } from './service/keycloak/keycloak.service';
 
 
+export function kcFactory(kcService: KeycloakService) {
+  return () => kcService.init();
+}
 
 @NgModule({
   declarations: [
@@ -112,6 +116,12 @@ import { BlockUsersPageComponent } from './block-users-page/block-users-page.com
       useClass: TokenInterceptor,
       multi: true,
     },
+    {
+      provide: APP_INITIALIZER,
+      deps: [KeycloakService],
+      useFactory: kcFactory,
+      multi: true
+    }
     
   ],
   bootstrap: [AppComponent]

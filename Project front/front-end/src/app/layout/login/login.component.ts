@@ -1,15 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthService } from '../../infrastructure/authentication/auth.service';
-import { RequestService } from 'src/app/requests/request.service';
-import { Requestt } from 'src/app/model/requestt.model';
-import { Role, User } from 'src/app/model/user.model';
-import { Administrator } from 'src/app/model/administrator.model';
-import { Employee } from 'src/app/model/employee.model';
-import { AdminProfileService } from 'src/app/service/admin-profile.service';
-import { UserTokenState } from 'src/app/model/userTokenState.model';
-import { TfaCodeVerificationRequest } from 'src/app/model/tfaCodeVerificationRequest.model';
+import { KeycloakService } from 'src/app/service/keycloak/keycloak.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +8,7 @@ import { TfaCodeVerificationRequest } from 'src/app/model/tfaCodeVerificationReq
 })
 export class LoginComponent {
 
-  constructor(private authService:AuthService,private router:Router,private service:AdminProfileService){
+  /*constructor(private authService:AuthService,private router:Router,private service:AdminProfileService){
     localStorage.clear();
   }
 
@@ -95,12 +85,7 @@ export class LoginComponent {
     };
     console.log("afdsaf")
     
-    /*this.authService.login(user).subscribe( {
-      next:(res)=>{
-          console.log('successfull',res)
- 
-          
-          this.router.navigate(['home'])*/
+
 
     this.authService.login(user).subscribe({
       next: (userTokenState: UserTokenState) => {
@@ -212,5 +197,15 @@ export class LoginComponent {
           this.router.navigate(['home']);
         }
       });
-  }
+  }*/
+
+    constructor(
+        private ss: KeycloakService
+      ) {
+      }
+    
+    async ngOnInit(): Promise<void> {
+        await this.ss.init();
+        await this.ss.login();
+      }
 }

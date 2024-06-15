@@ -1,28 +1,25 @@
-import { Injectable } from '@angular/core';
-import {
-  HttpRequest,
-  HttpHandler,
-  HttpInterceptor,
-  HttpEvent,
-} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import { KeycloakService } from 'src/app/service/keycloak/keycloak.service';
 
-import { Observable } from 'rxjs';
-import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-  constructor(private jwtService: JwtHelperService) {}
-  intercept(
-    request: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    let token = this.jwtService.tokenGetter();
+
+  constructor(
+    private keycloakService: KeycloakService
+  ) {}
+
+  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+    const token = this.keycloakService.keycloak.token;
     if (token) {
-      request = request.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`,
-        },
+      const authReq = request.clone({
+        headers: new HttpHeaders({
+          Authorization: `Bearer ${token}`
+        })
       });
+      return next.handle(authReq);
     }
     return next.handle(request);
   }

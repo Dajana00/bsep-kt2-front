@@ -1,8 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../model/user.model';
-import { JwtHelperService } from '@auth0/angular-jwt';
 import { Company } from '../model/company.model';
 import { Administrator } from '../model/administrator.model';
 import { Employee } from '../model/employee.model';
@@ -12,110 +11,51 @@ import { Employee } from '../model/employee.model';
 })
 export class AdminProfileService {
 
-  constructor(private http: HttpClient, private jwtHelper: JwtHelperService) { }
+  constructor(private http: HttpClient) { }
 
   private apiUrl = 'https://localhost:8081/api';
 
-
   getAllEmployees(): Observable<User[]> {
-    console.log("Usao u employees")
-    const token = this.jwtHelper.tokenGetter();
-    const headers = new HttpHeaders({
-      Authorization: 'Bearer ' + token,
-      'Content-Type': 'application/json',
-    });
-    return this.http.get<User[]>('https://localhost:8081/api/users/getAllEmployees' ,{headers});
+    return this.http.get<User[]>('https://localhost:8081/api/users/getAllEmployees');
   }
 
   getAllClients(): Observable<User[]> {
-    console.log("Usao u clinents")
-    const token = this.jwtHelper.tokenGetter();
-    const headers = new HttpHeaders({
-      Authorization: 'Bearer ' + token,
-      'Content-Type': 'application/json',
-    });
-    return this.http.get<User[]>('https://localhost:8081/api/client/getAllClients' ,{headers});
+    return this.http.get<User[]>('https://localhost:8081/api/client/getAllClients');
   }
+
   getAllCompanies(): Observable<Company[]> {
-    console.log("Usao u clinents")
-    const token = this.jwtHelper.tokenGetter();
-    const headers = new HttpHeaders({
-      Authorization: 'Bearer ' + token,
-      'Content-Type': 'application/json',
-    });
-    return this.http.get<Company[]>('https://localhost:8081/api/users/getAllCompanies' ,{headers});
+    return this.http.get<Company[]>('https://localhost:8081/api/users/getAllCompanies');
   }
   
   getAdminById(id: number): Observable<Administrator> {
-    const token = this.jwtHelper.tokenGetter();
-    const headers = new HttpHeaders({
-      Authorization: 'Bearer ' + token,
-      'Content-Type': 'application/json',
-    });
-    return this.http.get<Administrator>('https://localhost:8081/api/users/getAdminById/'+id,{headers});
+    return this.http.get<Administrator>(`https://localhost:8081/api/users/getAdminById/${id}`);
   }
 
-    
   getEmployeeById(id: number): Observable<Employee> {
-    const token = this.jwtHelper.tokenGetter();
-    const headers = new HttpHeaders({
-      Authorization: 'Bearer ' + token,
-      'Content-Type': 'application/json',
-    });
-    return this.http.get<Employee>('https://localhost:8081/api/users/getEmployeeById/'+id,{headers});
+    return this.http.get<Employee>(`https://localhost:8081/api/users/getEmployeeById/${id}`);
   }
-  updateAdmin(admin: Administrator,id:number): Observable<any> {
-    const token = this.jwtHelper.tokenGetter();
-    const headers = new HttpHeaders({
-      Authorization: 'Bearer ' + token,
-      'Content-Type': 'application/json',
-    });
-    return this.http.put<any>('https://localhost:8081/api/users/editAdmin/'+id, admin,{headers});
+
+  updateAdmin(admin: Administrator, id: number): Observable<any> {
+    return this.http.put<any>(`https://localhost:8081/api/users/editAdmin/${id}`, admin);
   }
-  updateEmployee(admin: Employee,id:number): Observable<any> {
-    const token = this.jwtHelper.tokenGetter();
-    const headers = new HttpHeaders({
-      Authorization: 'Bearer ' + token,
-      'Content-Type': 'application/json',
-    });
-    return this.http.put<any>('https://localhost:8081/api/users/editEmployee/'+id, admin,{headers});
+
+  updateEmployee(admin: Employee, id: number): Observable<any> {
+    return this.http.put<any>(`https://localhost:8081/api/users/editEmployee/${id}`, admin);
   }
+
   registerAdmin(admin: Administrator): Observable<Administrator> {
-    const token = this.jwtHelper.tokenGetter();
-    const headers = new HttpHeaders({
-      Authorization: 'Bearer ' + token,
-      'Content-Type': 'application/json',
-    });
-    return this.http.post<Administrator>(`${this.apiUrl}/users/registerAdmin`, admin,{headers});
+    return this.http.post<Administrator>(`${this.apiUrl}/users/registerAdmin`, admin);
   }
 
   registerEmployee(employee: Employee): Observable<Employee> {
-    const token = this.jwtHelper.tokenGetter();
-    const headers = new HttpHeaders({
-      Authorization: 'Bearer ' + token,
-      'Content-Type': 'application/json',
-    });
-    return this.http.post<Employee>(`${this.apiUrl}/users/registerEmployee`, employee,{headers});
+    return this.http.post<Employee>(`${this.apiUrl}/users/registerEmployee`, employee);
   }
 
   blockOrUnblock(user: User): Observable<User> {
-    const token = this.jwtHelper.tokenGetter();
-    const headers = new HttpHeaders({
-      Authorization: 'Bearer ' + token,
-      'Content-Type': 'application/json',
-    });
-    //console.log(headers);
-    //console.log(user)
-    return this.http.put<User>(`https://localhost:8081/api/users/blockOrUnblock`, user, {headers});
+    return this.http.put<User>(`https://localhost:8081/api/users/blockOrUnblock`, user);
   }
 
   getAllUsers(): Observable<User[]> {
-    const token = this.jwtHelper.tokenGetter();
-    const headers = new HttpHeaders({
-      Authorization: 'Bearer ' + token,
-      'Content-Type': 'application/json',
-    });
-    return this.http.get<User[]>(`https://localhost:8081/api/users/getAllUsers`, {headers});
+    return this.http.get<User[]>(`https://localhost:8081/api/users/getAllUsers`);
   }
- 
 }

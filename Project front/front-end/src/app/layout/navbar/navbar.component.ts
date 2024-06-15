@@ -1,47 +1,47 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../infrastructure/authentication/auth.service';
+import { KeycloakService } from 'src/app/service/keycloak/keycloak.service';
+
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit{
-  isLogged : boolean=false
+export class NavbarComponent implements OnInit {
+  isLogged: boolean = false;
   userRole: string = '';
+
   constructor(
     private router: Router,
-    private authService: AuthService 
-  ) {
-    this.authService.loginObserver.subscribe((val) => {
-      this.isLogged = val;
-      
-      
-        if (this.isLogged) {
-          this.userRole = this.authService.getUserRole()
-          console.log("USER ROLE : ",this.userRole);
+    private keycloakService: KeycloakService
+  ) { }
 
-        }
-      
-        
-      
-    });
-
-    
-  }
   ngOnInit(): void {
-    this.authService.loginObserver.subscribe((val) => {
-      this.isLogged = val;
-      console.log('isLogged', this.isLogged)
-      
-     
-    });
-
-    
+    if (this.keycloakService.profile) {
+      console.log(this.keycloakService.roles)
+      this.isLogged = true
+      this.setUserRole
+     }
   }
-  onLogout() {
-    this.authService.logout();
+
+  setUserRole(): void {
+    //console.log("USLOO u roles")
+    const roles = this.keycloakService.roles;
+    if (roles.includes('ADMINISTRATOR')) {
+      this.userRole = 'ADMINISTRATOR';
+    } else if (roles.includes('CLIENT')) {
+      this.userRole = 'CLIENT';
+    } else if (roles.includes('EMPLOYEE')) {
+      this.userRole = 'EMPLOYEE';
+    } else {
+      this.userRole = 'UNKNOWN';
+    }
+    console.log("USER ROLE:", this.userRole);
+  }
+
+  onLogout(): void {
+    this.keycloakService.logout();
     this.router.navigate(['login']);
   }
 }

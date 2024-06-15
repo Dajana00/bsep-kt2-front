@@ -28,8 +28,8 @@ export class AuthService {
 
   constructor(private http: HttpClient, private jwtHelper: JwtHelperService) {
     //localStorage.clear();
-    this.userClaims = this.jwtHelper.decodeToken();
-    if (this.userClaims) this.loginSource.next(true);
+    //this.userClaims = this.jwtHelper.decodeToken();
+    //if (this.userClaims) this.loginSource.next(true);
   }
 
  
